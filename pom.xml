@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.teragrep</groupId>
+  <artifactId>cnf_01</artifactId>
+  <version>${revision}${sha1}${changelist}</version>
+  <packaging>jar</packaging>
+  <name>cnf_01</name>
+  <description>Teragrep Java Configuration Library</description>
+  <url>https://teragrep.com</url>
+  <properties>
+    <changelist>-SNAPSHOT</changelist>
+    <java.version>11</java.version>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <revision>0.0.1</revision>
+    <sha1></sha1>
+  </properties>
+  <build>
+    <directory>${project.basedir}/target</directory>
+    <finalName>cnf_01</finalName>
+    <resources>
+      <resource>
+        <filtering>true</filtering>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
+    <plugins>
+      <!-- mandatory plugin: enforcer -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.4.1</version>
+        <executions>
+          <execution>
+            <id>enforce-settings</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireMavenVersion>
+                  <version>3.2.5</version>
+                </requireMavenVersion>
+                <requireJavaVersion>
+                  <version>[11,12)</version>
+                </requireJavaVersion>
+                <banDynamicVersions></banDynamicVersions>
+                <requirePluginVersions>
+                  <message>All plugins are required to contain specific version.</message>
+                  <unCheckedPluginList>org.apache.maven.plugins:maven-site-plugin,org.apache.maven.plugins:maven-resources-plugin,org.apache.maven.plugins:maven-clean-plugin,org.apache.maven.plugins:maven-install-plugin,org.apache.maven.plugins:maven-deploy-plugin,org.apache.maven.plugins:maven-compiler-plugin,org.apache.maven.plugins:maven-jar-plugin</unCheckedPluginList>
+                </requirePluginVersions>
+                <requireNoRepositories>
+                  <message>Do not use any external repositories.</message>
+                </requireNoRepositories>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- mandatory plugin: formatter (spotless) -->
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>2.30.0</version>
+        <configuration>
+          <java>
+            <eclipse>
+              <file>${project.basedir}/eclipse-java-formatter.xml</file>
+              <version>4.10.0</version>
+            </eclipse>
+            <removeUnusedImports></removeUnusedImports>
+            <licenseHeader>
+              <file>${project.basedir}/license-header</file>
+            </licenseHeader>
+          </java>
+          <pom>
+            <sortPom>
+              <!-- see https://github.com/diffplug/spotless/blob/main/plugin-maven/README.md#sortpom -->
+              <encoding>UTF-8</encoding>
+              <lineSeparator>\n</lineSeparator>
+              <expandEmptyElements>true</expandEmptyElements>
+              <keepBlankLines>false</keepBlankLines>
+              <nrOfIndentSpace>2</nrOfIndentSpace>
+              <predefinedSortOrder>recommended_2008_06</predefinedSortOrder>
+              <sortProperties>true</sortProperties>
+              <sortModules>true</sortModules>
+              <sortExecutions>true</sortExecutions>
+            </sortPom>
+          </pom>
+          <formats>
+            <format>
+              <includes>
+                <include>.gitattributes</include>
+                <include>.gitignore</include>
+              </includes>
+              <trimTrailingWhitespace></trimTrailingWhitespace>
+              <endWithNewline></endWithNewline>
+              <indent>
+                <tabs>true</tabs>
+                <spacesPerTab>4</spacesPerTab>
+              </indent>
+            </format>
+          </formats>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <phase>compile</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- mandatory plugin: rat -->
+      <plugin>
+        <groupId>org.apache.rat</groupId>
+        <artifactId>apache-rat-plugin</artifactId>
+        <version>0.16.1</version>
+        <inherited>false</inherited>
+        <configuration>
+          <addDefaultLicenseMatchers>false</addDefaultLicenseMatchers>
+          <addDefaultLicenses>false</addDefaultLicenses>
+          <families>
+            <family>
+              <id>Teragrep</id>
+              <name>Affero General Public License v3</name>
+            </family>
+          </families>
+          <licenses>
+            <license>
+              <all>
+                <copyright>
+                  <owner>Suomen Kanuuna Oy</owner>
+                  <start>2024</start>
+                </copyright>
+                <text>Teragrep Java Configuration Library (cnf_01)</text>
+              </all>
+              <family>Teragrep</family>
+            </license>
+          </licenses>
+          <consoleOutput>true</consoleOutput>
+          <excludeSubProjects>false</excludeSubProjects>
+          <excludes>
+            <!-- git -->
+            <exclude>.git/**</exclude>
+            <exclude>.gitattributes</exclude>
+            <exclude>.gitignore</exclude>
+            <exclude>.gitmodules</exclude>
+            <!-- ci -->
+            <exclude>.github/workflows/*</exclude>
+            <exclude>.github/ISSUE_TEMPLATE/*</exclude>
+            <exclude>.github/PULL_REQUEST_TEMPLATE/*</exclude>
+            <exclude>toolchains.xml</exclude>
+            <exclude>settings.xml</exclude>
+            <!-- maven -->
+            <exclude>pom.xml</exclude>
+            <exclude>eclipse-java-formatter.xml</exclude>
+            <!-- readme -->
+            <exclude>README.adoc</exclude>
+          </excludes>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <phase>test</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M5</version>
+        <configuration>
+          <parallel>all</parallel>
+          <useUnlimitedThreads>true</useUnlimitedThreads>
+          <statelessTestsetReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5Xml30StatelessReporter">
+            <usePhrasedTestSuiteClassName>true</usePhrasedTestSuiteClassName>
+            <usePhrasedTestCaseClassName>true</usePhrasedTestCaseClassName>
+            <usePhrasedTestCaseMethodName>true</usePhrasedTestCaseMethodName>
+          </statelessTestsetReporter>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
