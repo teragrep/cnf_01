@@ -6,6 +6,4 @@
 /.classpath
 /.factorypath
 /.flattened-pom.xml
-fuzzer/**
-output.log
 .project
