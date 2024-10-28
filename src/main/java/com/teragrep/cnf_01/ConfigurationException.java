@@ -45,15 +45,9 @@
  */
 package com.teragrep.cnf_01;
 
-import java.io.IOException;
-
 public final class ConfigurationException extends Exception {
 
-    public ConfigurationException(IOException cause) {
-        this("Error reading configuration file with message: " + cause.getMessage());
-    }
-
-    public ConfigurationException(String message) {
-        super(message);
+    public ConfigurationException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

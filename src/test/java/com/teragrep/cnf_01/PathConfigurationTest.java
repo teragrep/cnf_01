@@ -45,6 +45,7 @@
  */
 package com.teragrep.cnf_01;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -64,9 +65,42 @@ public class PathConfigurationTest {
 
     @Test
     public void testInvalidPath() {
-        PathConfiguration pathConfiguration = new PathConfiguration("invalid.path");
+        final String path = "invalid.path";
+        PathConfiguration pathConfiguration = new PathConfiguration(path);
         ConfigurationException exception = Assertions
                 .assertThrows(ConfigurationException.class, pathConfiguration::configuration);
-        Assertions.assertEquals("Error reading configuration file with message: invalid.path", exception.getMessage());
+        Assertions.assertEquals("Can't find the properties file at " + path, exception.getMessage());
+    }
+
+    @Test
+    public void testEquals() {
+        PathConfiguration config1 = new PathConfiguration("src/test/resources/configuration.properties");
+        PathConfiguration config2 = new PathConfiguration("src/test/resources/configuration.properties");
+
+        Assertions.assertDoesNotThrow(config1::configuration);
+        Assertions.assertEquals(config1, config2);
+    }
+
+    @Test
+    public void testNotEquals() {
+        PathConfiguration config1 = new PathConfiguration("src/test/resources/configuration.properties");
+        PathConfiguration config2 = new PathConfiguration("invalid.path");
+
+        Assertions.assertNotEquals(config1, config2);
+    }
+
+    @Test
+    public void testHashCode() {
+        PathConfiguration config1 = new PathConfiguration("src/test/resources/configuration.properties");
+        PathConfiguration config2 = new PathConfiguration("src/test/resources/configuration.properties");
+        PathConfiguration difConfig = new PathConfiguration("invalid.path");
+
+        Assertions.assertEquals(config1.hashCode(), config2.hashCode());
+        Assertions.assertNotEquals(config1.hashCode(), difConfig.hashCode());
+    }
+
+    @Test
+    public void testEqualsVerifier() {
+        EqualsVerifier.forClass(PathConfiguration.class).withNonnullFields("file").verify();
     }
 }

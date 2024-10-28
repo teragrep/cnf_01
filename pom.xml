@@ -32,6 +32,12 @@
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>nl.jqno.equalsverifier</groupId>
+      <artifactId>equalsverifier</artifactId>
+      <version>3.16.1</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <directory>${project.basedir}/target</directory>
@@ -175,6 +181,8 @@
             <exclude>eclipse-java-formatter.xml</exclude>
             <!-- readme -->
             <exclude>README.adoc</exclude>
+            <!-- resources -->
+            <exclude>src/test/resources/*</exclude>
           </excludes>
         </configuration>
         <executions>

@@ -45,6 +45,7 @@
  */
 package com.teragrep.cnf_01;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -82,5 +83,59 @@ public class DefaultConfigurationTest {
         Assertions.assertEquals(1, result.size());
         Assertions.assertTrue(result.containsKey("test"));
         Assertions.assertEquals("test", result.get("test"));
+    }
+
+    @Test
+    public void testEquals() {
+        PathConfiguration pathConfig1 = new PathConfiguration("src/test/resources/configuration.properties");
+        Map<String, String> defaults1 = Assertions.assertDoesNotThrow(pathConfig1::configuration);
+        PathConfiguration pathConfig2 = new PathConfiguration("src/test/resources/configuration.properties");
+        Map<String, String> defaults2 = Assertions.assertDoesNotThrow(pathConfig2::configuration);
+
+        DefaultConfiguration defaultConfiguration1 = new DefaultConfiguration(pathConfig1, defaults1);
+        DefaultConfiguration defaultConfiguration2 = new DefaultConfiguration(pathConfig2, defaults2);
+
+        defaultConfiguration1.configuration();
+
+        Assertions.assertEquals(defaultConfiguration1, defaultConfiguration2);
+    }
+
+    @Test
+    public void testNotEquals() {
+        PathConfiguration pathConfig1 = new PathConfiguration("src/test/resources/configuration.properties");
+        Map<String, String> defaults1 = Assertions.assertDoesNotThrow(pathConfig1::configuration);
+        PathConfiguration pathConfig2 = new PathConfiguration("invalid.path");
+        Map<String, String> defaults2 = new HashMap<>();
+
+        DefaultConfiguration defaultConfiguration1 = new DefaultConfiguration(pathConfig1, defaults1);
+        DefaultConfiguration defaultConfiguration2 = new DefaultConfiguration(pathConfig2, defaults2);
+
+        Assertions.assertNotEquals(defaultConfiguration1, defaultConfiguration2);
+    }
+
+    @Test
+    public void testHashCode() {
+        PathConfiguration pathConfig1 = new PathConfiguration("src/test/resources/configuration.properties");
+        Map<String, String> defaults1 = Assertions.assertDoesNotThrow(pathConfig1::configuration);
+        PathConfiguration pathConfig2 = new PathConfiguration("src/test/resources/configuration.properties");
+        Map<String, String> defaults2 = Assertions.assertDoesNotThrow(pathConfig2::configuration);
+        PathConfiguration difPathConfig = new PathConfiguration("invalid.path");
+        Map<String, String> difDefaults = new HashMap<>();
+
+        DefaultConfiguration defaultConfiguration1 = new DefaultConfiguration(pathConfig1, defaults1);
+        DefaultConfiguration defaultConfiguration2 = new DefaultConfiguration(pathConfig2, defaults2);
+        DefaultConfiguration difDefaultConfiguration = new DefaultConfiguration(difPathConfig, difDefaults);
+
+        Assertions.assertEquals(defaultConfiguration1.hashCode(), defaultConfiguration2.hashCode());
+        Assertions.assertNotEquals(defaultConfiguration1.hashCode(), difDefaultConfiguration.hashCode());
+    }
+
+    @Test
+    public void testEqualsVerifier() {
+        EqualsVerifier
+                .forClass(DefaultConfiguration.class)
+                .withNonnullFields("config")
+                .withNonnullFields("defaults")
+                .verify();
     }
 }

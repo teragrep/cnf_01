@@ -74,7 +74,7 @@ public final class PathConfiguration implements Configuration {
             properties.load(in);
         }
         catch (IOException e) {
-            throw new ConfigurationException(e);
+            throw new ConfigurationException("Can't find the properties file at " + file.getPath(), e);
         }
 
         return Collections
@@ -88,10 +88,12 @@ public final class PathConfiguration implements Configuration {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
+        if (this == o) {
             return true;
-        if (o == null || getClass() != o.getClass())
+        }
+        else if (o == null || getClass() != o.getClass()) {
             return false;
+        }
         PathConfiguration config = (PathConfiguration) o;
         return file.equals(config.file);
     }
