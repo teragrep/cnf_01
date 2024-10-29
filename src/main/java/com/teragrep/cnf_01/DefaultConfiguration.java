@@ -64,11 +64,11 @@ public final class DefaultConfiguration implements Configuration {
     }
 
     @Override
-    public Map<String, String> configuration() {
+    public Map<String, String> asMap() {
         Map<String, String> configuration;
 
         try {
-            configuration = config.configuration();
+            configuration = config.asMap();
         }
         catch (ConfigurationException e) {
             configuration = defaults;

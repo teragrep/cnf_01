@@ -62,7 +62,7 @@ public class DefaultConfigurationTest {
                 new PathConfiguration("src/test/resources/configuration.properties"),
                 defaults
         );
-        Map<String, String> result = defaultConfiguration.configuration();
+        Map<String, String> result = defaultConfiguration.asMap();
 
         Assertions.assertEquals(1, result.size());
         Assertions.assertTrue(result.containsKey("foo"));
@@ -78,7 +78,7 @@ public class DefaultConfigurationTest {
                 new PathConfiguration("invalid.path"),
                 defaults
         );
-        Map<String, String> result = defaultConfiguration.configuration();
+        Map<String, String> result = defaultConfiguration.asMap();
 
         Assertions.assertEquals(1, result.size());
         Assertions.assertTrue(result.containsKey("test"));
@@ -88,14 +88,14 @@ public class DefaultConfigurationTest {
     @Test
     public void testEquals() {
         PathConfiguration pathConfig1 = new PathConfiguration("src/test/resources/configuration.properties");
-        Map<String, String> defaults1 = Assertions.assertDoesNotThrow(pathConfig1::configuration);
+        Map<String, String> defaults1 = Assertions.assertDoesNotThrow(pathConfig1::asMap);
         PathConfiguration pathConfig2 = new PathConfiguration("src/test/resources/configuration.properties");
-        Map<String, String> defaults2 = Assertions.assertDoesNotThrow(pathConfig2::configuration);
+        Map<String, String> defaults2 = Assertions.assertDoesNotThrow(pathConfig2::asMap);
 
         DefaultConfiguration defaultConfiguration1 = new DefaultConfiguration(pathConfig1, defaults1);
         DefaultConfiguration defaultConfiguration2 = new DefaultConfiguration(pathConfig2, defaults2);
 
-        defaultConfiguration1.configuration();
+        defaultConfiguration1.asMap();
 
         Assertions.assertEquals(defaultConfiguration1, defaultConfiguration2);
     }
@@ -103,7 +103,7 @@ public class DefaultConfigurationTest {
     @Test
     public void testNotEquals() {
         PathConfiguration pathConfig1 = new PathConfiguration("src/test/resources/configuration.properties");
-        Map<String, String> defaults1 = Assertions.assertDoesNotThrow(pathConfig1::configuration);
+        Map<String, String> defaults1 = Assertions.assertDoesNotThrow(pathConfig1::asMap);
         PathConfiguration pathConfig2 = new PathConfiguration("invalid.path");
         Map<String, String> defaults2 = new HashMap<>();
 
@@ -116,9 +116,9 @@ public class DefaultConfigurationTest {
     @Test
     public void testHashCode() {
         PathConfiguration pathConfig1 = new PathConfiguration("src/test/resources/configuration.properties");
-        Map<String, String> defaults1 = Assertions.assertDoesNotThrow(pathConfig1::configuration);
+        Map<String, String> defaults1 = Assertions.assertDoesNotThrow(pathConfig1::asMap);
         PathConfiguration pathConfig2 = new PathConfiguration("src/test/resources/configuration.properties");
-        Map<String, String> defaults2 = Assertions.assertDoesNotThrow(pathConfig2::configuration);
+        Map<String, String> defaults2 = Assertions.assertDoesNotThrow(pathConfig2::asMap);
         PathConfiguration difPathConfig = new PathConfiguration("invalid.path");
         Map<String, String> difDefaults = new HashMap<>();
 

@@ -73,7 +73,7 @@ public final class PathConfiguration implements Configuration {
     }
 
     @Override
-    public Map<String, String> configuration() throws ConfigurationException {
+    public Map<String, String> asMap() throws ConfigurationException {
         final Properties properties = new Properties();
         try (final InputStream in = Files.newInputStream(file.toPath())) {
             properties.load(in);

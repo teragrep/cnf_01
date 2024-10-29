@@ -56,7 +56,7 @@ public class PathConfigurationTest {
     @Test
     public void testValidPath() {
         PathConfiguration pathConfiguration = new PathConfiguration("src/test/resources/configuration.properties");
-        Map<String, String> map = Assertions.assertDoesNotThrow(pathConfiguration::configuration);
+        Map<String, String> map = Assertions.assertDoesNotThrow(pathConfiguration::asMap);
 
         Assertions.assertEquals(1, map.size());
         Assertions.assertTrue(map.containsKey("foo"));
@@ -68,7 +68,7 @@ public class PathConfigurationTest {
         final String path = "invalid.path";
         PathConfiguration pathConfiguration = new PathConfiguration(path);
         ConfigurationException exception = Assertions
-                .assertThrows(ConfigurationException.class, pathConfiguration::configuration);
+                .assertThrows(ConfigurationException.class, pathConfiguration::asMap);
         Assertions.assertEquals("Can't find the properties file at " + path, exception.getMessage());
     }
 
@@ -77,7 +77,7 @@ public class PathConfigurationTest {
         PathConfiguration config1 = new PathConfiguration("src/test/resources/configuration.properties");
         PathConfiguration config2 = new PathConfiguration("src/test/resources/configuration.properties");
 
-        Assertions.assertDoesNotThrow(config1::configuration);
+        Assertions.assertDoesNotThrow(config1::asMap);
         Assertions.assertEquals(config1, config2);
     }
 
