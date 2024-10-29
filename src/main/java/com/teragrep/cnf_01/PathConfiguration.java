@@ -45,6 +45,9 @@
  */
 package com.teragrep.cnf_01;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,13 +60,15 @@ import java.util.stream.Collectors;
 
 public final class PathConfiguration implements Configuration {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(PathConfiguration.class);
+
     private final File file;
 
-    public PathConfiguration(String fileName) {
+    public PathConfiguration(final String fileName) {
         this(new File(fileName));
     }
 
-    public PathConfiguration(File file) {
+    public PathConfiguration(final File file) {
         this.file = file;
     }
 
@@ -77,24 +82,32 @@ public final class PathConfiguration implements Configuration {
             throw new ConfigurationException("Can't find the properties file at " + file.getPath(), e);
         }
 
-        return Collections
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Returning configuration map generated from file <[{}]>.", file.getPath());
+        }
+
+        final Map<String, String> configuration = Collections
                 .unmodifiableMap(
                         properties
                                 .entrySet()
                                 .stream()
                                 .collect(Collectors.toMap(k -> k.getKey().toString(), k -> k.getValue().toString()))
                 );
+
+        LOGGER.trace("Returning configuration map <[{}]>", configuration);
+
+        return configuration;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
         else if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        PathConfiguration config = (PathConfiguration) o;
+        final PathConfiguration config = (PathConfiguration) o;
         return file.equals(config.file);
     }
 

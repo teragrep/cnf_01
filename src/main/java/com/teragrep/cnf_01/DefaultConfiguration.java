@@ -45,15 +45,20 @@
  */
 package com.teragrep.cnf_01;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Map;
 import java.util.Objects;
 
 public final class DefaultConfiguration implements Configuration {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultConfiguration.class);
+
     private final Configuration config;
     private final Map<String, String> defaults;
 
-    public DefaultConfiguration(Configuration config, Map<String, String> defaults) {
+    public DefaultConfiguration(final Configuration config, final Map<String, String> defaults) {
         this.config = config;
         this.defaults = defaults;
     }
@@ -67,6 +72,16 @@ public final class DefaultConfiguration implements Configuration {
         }
         catch (ConfigurationException e) {
             configuration = defaults;
+
+            if (LOGGER.isInfoEnabled()) {
+                LOGGER
+                        .info(
+                                "Got exception <{}> from configuration. Providing default configurations instead.",
+                                e.getMessage()
+                        );
+            }
+
+            LOGGER.trace("Returning configuration map <[{}]>.", configuration);
         }
 
         return configuration;

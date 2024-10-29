@@ -47,7 +47,7 @@ package com.teragrep.cnf_01;
 
 public final class ConfigurationException extends Exception {
 
-    public ConfigurationException(String message, Throwable cause) {
+    public ConfigurationException(final String message, final Throwable cause) {
         super(message, cause);
     }
 }

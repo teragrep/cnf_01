@@ -55,5 +55,5 @@ public interface Configuration {
      * @return configuration as an unmodifiable map
      * @throws ConfigurationException if configuration is broken or not found
      */
-    Map<String, String> configuration() throws ConfigurationException;
+    public abstract Map<String, String> configuration() throws ConfigurationException;
 }
