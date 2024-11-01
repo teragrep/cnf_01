@@ -48,6 +48,7 @@ package com.teragrep.cnf_01;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 
@@ -84,7 +85,7 @@ public final class DefaultConfiguration implements Configuration {
             LOGGER.trace("Returning configuration map <[{}]>.", configuration);
         }
 
-        return configuration;
+        return Collections.unmodifiableMap(configuration);
     }
 
     @Override
