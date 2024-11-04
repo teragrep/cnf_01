@@ -45,46 +45,25 @@
  */
 package com.teragrep.cnf_01;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
-public final class DefaultConfiguration implements Configuration {
+/**
+ * An immutable deep copy of a Map.
+ */
+public final class DeepCopiedMap {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultConfiguration.class);
+    private final Map<String, String> map;
 
-    private final Configuration config;
-    private final DeepCopiedMap defaults;
-
-    public DefaultConfiguration(final Configuration config, final DeepCopiedMap defaults) {
-        this.config = config;
-        this.defaults = defaults;
+    public DeepCopiedMap(final Map<String, String> map) {
+        this.map = map;
     }
 
-    @Override
-    public Map<String, String> asMap() {
-        Map<String, String> configuration;
-
-        try {
-            configuration = config.asMap();
-        }
-        catch (ConfigurationException e) {
-            configuration = defaults.map();
-
-            if (LOGGER.isInfoEnabled()) {
-                LOGGER
-                        .info(
-                                "Got exception <{}> from configuration. Providing default configurations instead.",
-                                e.getMessage()
-                        );
-            }
-        }
-
-        LOGGER.trace("Returning configuration map <[{}]>.", configuration);
-
-        return configuration;
+    public Map<String, String> map() {
+        return Collections
+                .unmodifiableMap(map.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
     }
 
     @Override
@@ -95,13 +74,12 @@ public final class DefaultConfiguration implements Configuration {
         else if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        final DefaultConfiguration defaultConfiguration = (DefaultConfiguration) o;
-        return Objects.equals(config, defaultConfiguration.config)
-                && Objects.equals(defaults, defaultConfiguration.defaults);
+        final DeepCopiedMap deepCopiedMap = (DeepCopiedMap) o;
+        return map.equals(deepCopiedMap.map);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(config, defaults);
+        return Objects.hashCode(map);
     }
 }

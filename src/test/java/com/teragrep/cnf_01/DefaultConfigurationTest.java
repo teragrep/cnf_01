@@ -56,7 +56,7 @@ public class DefaultConfigurationTest {
 
     @Test
     public void testValidConfiguration() {
-        Map<String, String> defaults = new HashMap<>();
+        DeepCopiedMap defaults = new DeepCopiedMap(new HashMap<>());
 
         DefaultConfiguration defaultConfiguration = new DefaultConfiguration(
                 new PathConfiguration("src/test/resources/configuration.properties"),
@@ -71,8 +71,9 @@ public class DefaultConfigurationTest {
 
     @Test
     public void testInvalidConfiguration() {
-        Map<String, String> defaults = new HashMap<>();
-        defaults.put("test", "test");
+        Map<String, String> map = new HashMap<>();
+        map.put("test", "test");
+        DeepCopiedMap defaults = new DeepCopiedMap(map);
 
         DefaultConfiguration defaultConfiguration = new DefaultConfiguration(
                 new PathConfiguration("invalid.path"),
@@ -88,9 +89,9 @@ public class DefaultConfigurationTest {
     @Test
     public void testEquals() {
         PathConfiguration pathConfig1 = new PathConfiguration("src/test/resources/configuration.properties");
-        Map<String, String> defaults1 = Assertions.assertDoesNotThrow(pathConfig1::asMap);
+        DeepCopiedMap defaults1 = Assertions.assertDoesNotThrow(() -> new DeepCopiedMap(pathConfig1.asMap()));
         PathConfiguration pathConfig2 = new PathConfiguration("src/test/resources/configuration.properties");
-        Map<String, String> defaults2 = Assertions.assertDoesNotThrow(pathConfig2::asMap);
+        DeepCopiedMap defaults2 = Assertions.assertDoesNotThrow(() -> new DeepCopiedMap(pathConfig2.asMap()));
 
         DefaultConfiguration defaultConfiguration1 = new DefaultConfiguration(pathConfig1, defaults1);
         DefaultConfiguration defaultConfiguration2 = new DefaultConfiguration(pathConfig2, defaults2);
@@ -103,9 +104,9 @@ public class DefaultConfigurationTest {
     @Test
     public void testNotEquals() {
         PathConfiguration pathConfig1 = new PathConfiguration("src/test/resources/configuration.properties");
-        Map<String, String> defaults1 = Assertions.assertDoesNotThrow(pathConfig1::asMap);
+        DeepCopiedMap defaults1 = Assertions.assertDoesNotThrow(() -> new DeepCopiedMap(pathConfig1.asMap()));
         PathConfiguration pathConfig2 = new PathConfiguration("invalid.path");
-        Map<String, String> defaults2 = new HashMap<>();
+        DeepCopiedMap defaults2 = new DeepCopiedMap(new HashMap<>());
 
         DefaultConfiguration defaultConfiguration1 = new DefaultConfiguration(pathConfig1, defaults1);
         DefaultConfiguration defaultConfiguration2 = new DefaultConfiguration(pathConfig2, defaults2);
@@ -116,11 +117,11 @@ public class DefaultConfigurationTest {
     @Test
     public void testHashCode() {
         PathConfiguration pathConfig1 = new PathConfiguration("src/test/resources/configuration.properties");
-        Map<String, String> defaults1 = Assertions.assertDoesNotThrow(pathConfig1::asMap);
+        DeepCopiedMap defaults1 = Assertions.assertDoesNotThrow(() -> new DeepCopiedMap(pathConfig1.asMap()));
         PathConfiguration pathConfig2 = new PathConfiguration("src/test/resources/configuration.properties");
-        Map<String, String> defaults2 = Assertions.assertDoesNotThrow(pathConfig2::asMap);
+        DeepCopiedMap defaults2 = Assertions.assertDoesNotThrow(() -> new DeepCopiedMap(pathConfig2.asMap()));
         PathConfiguration difPathConfig = new PathConfiguration("invalid.path");
-        Map<String, String> difDefaults = new HashMap<>();
+        DeepCopiedMap difDefaults = new DeepCopiedMap(new HashMap<>());
 
         DefaultConfiguration defaultConfiguration1 = new DefaultConfiguration(pathConfig1, defaults1);
         DefaultConfiguration defaultConfiguration2 = new DefaultConfiguration(pathConfig2, defaults2);
