@@ -57,11 +57,15 @@ import java.util.function.Function;
  * An immutable deep copy of a Map. Only possible to create with ImmutabilitySupportedMap because of the class
  * visibility.
  */
-final class ImmutableMap<K, V> implements Map<K, V> {
+public final class ImmutableMap<K, V> implements Map<K, V> {
 
     private final Map<K, V> map;
 
-    public ImmutableMap(final Map<K, V> map) {
+    private ImmutableMap() {
+        throw new UnsupportedOperationException();
+    }
+
+    ImmutableMap(final Map<K, V> map) {
         this.map = map;
     }
 
