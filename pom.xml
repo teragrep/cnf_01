@@ -54,12 +54,6 @@
   <build>
     <directory>${project.basedir}/target</directory>
     <finalName>cnf_01</finalName>
-    <resources>
-      <resource>
-        <filtering>true</filtering>
-        <directory>src/main/resources</directory>
-      </resource>
-    </resources>
     <plugins>
       <!-- mandatory plugin: enforcer -->
       <plugin>
