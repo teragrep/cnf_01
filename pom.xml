@@ -8,6 +8,31 @@
   <name>cnf_01</name>
   <description>Teragrep Java Configuration Library</description>
   <url>https://teragrep.com</url>
+  <licenses>
+    <license>
+      <name>GNU Affero General Public License v3.0</name>
+      <url>https://www.gnu.org/licenses/agpl-3.0.txt</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>51</name>
+      <email>51@teragrep.com</email>
+      <organization>Teragrep</organization>
+      <organizationUrl>https://teragrep.com</organizationUrl>
+    </developer>
+    <developer>
+      <name>Mikko Kortelainen</name>
+      <email>1@teragrep.com</email>
+      <organization>Teragrep</organization>
+      <organizationUrl>https://teragrep.com</organizationUrl>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://github.com/teragrep/cnf_01.git</connection>
+    <developerConnection>scm:git:git@github.com:teragrep/cnf_01.git</developerConnection>
+    <url>https://github.com/teragrep/cnf_01/tree/main</url>
+  </scm>
   <properties>
     <changelist>-SNAPSHOT</changelist>
     <java.version>11</java.version>
