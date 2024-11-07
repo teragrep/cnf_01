@@ -56,9 +56,9 @@ public final class DefaultConfiguration implements Configuration {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultConfiguration.class);
 
     private final Configuration config;
-    private final DeepCopiedMap defaults;
+    private final ImmutableMap<String, String> defaults;
 
-    public DefaultConfiguration(final Configuration config, final DeepCopiedMap defaults) {
+    public DefaultConfiguration(final Configuration config, final ImmutableMap<String, String> defaults) {
         this.config = config;
         this.defaults = defaults;
     }
@@ -71,7 +71,7 @@ public final class DefaultConfiguration implements Configuration {
             configuration = config.asMap();
         }
         catch (ConfigurationException e) {
-            configuration = defaults.map();
+            configuration = defaults;
 
             if (LOGGER.isInfoEnabled()) {
                 LOGGER

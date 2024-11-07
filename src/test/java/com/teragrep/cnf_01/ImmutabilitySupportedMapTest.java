@@ -52,70 +52,77 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DeepCopiedMapTest {
+public class ImmutabilitySupportedMapTest {
 
     @Test
-    public void testMap() {
-        Map<String, String> map = new HashMap<>();
-        map.put("foo", "bar");
+    public void testToImmutableMap() {
+        Map<String, String> originalMap = new HashMap<>();
+        originalMap.put("foo", "bar");
 
-        Map<String, String> deepCopiedMap = new DeepCopiedMap(map).map();
+        ImmutabilitySupportedMap<String, String> map = new ImmutabilitySupportedMap<>(originalMap);
 
-        // modifying the original should have no effect on the deep copy
-        map.put("bar", "foo");
+        ImmutableMap<String, String> resultMap = map.toImmutableMap();
 
-        Assertions.assertEquals(1, deepCopiedMap.size());
-        Assertions.assertEquals("bar", deepCopiedMap.get("foo"));
+        // modifying the original doesn't have effect after the method call
+        originalMap.put("bar", "foo");
+
+        Assertions.assertEquals(1, resultMap.size());
+        Assertions.assertEquals("bar", resultMap.get("foo"));
 
         // can't be modified
-        Assertions.assertThrows(UnsupportedOperationException.class, () -> deepCopiedMap.put("foo", "baz"));
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> resultMap.put("foo", "baz"));
     }
 
     @Test
     public void testEquals() {
         Map<String, String> map1 = new HashMap<>();
-        map1.put("foo", "bar");
         Map<String, String> map2 = new HashMap<>();
+        map1.put("foo", "bar");
         map2.put("foo", "bar");
 
-        DeepCopiedMap deepCopiedMap1 = new DeepCopiedMap(map1);
-        DeepCopiedMap deepCopiedMap2 = new DeepCopiedMap(map2);
+        ImmutabilitySupportedMap<String, String> immutabilitySupportedMap1 = new ImmutabilitySupportedMap<>(map1);
+        ImmutabilitySupportedMap<String, String> immutabilitySupportedMap2 = new ImmutabilitySupportedMap<>(map2);
 
-        deepCopiedMap1.map();
+        // It's a Map decorator so it is mutable, but the new function toImmutableMap shouldn't mutate the object
+        immutabilitySupportedMap1.toImmutableMap();
 
-        Assertions.assertEquals(deepCopiedMap1, deepCopiedMap2);
+        Assertions.assertEquals(immutabilitySupportedMap1, immutabilitySupportedMap2);
     }
 
     @Test
     public void testNotEquals() {
         Map<String, String> map1 = new HashMap<>();
-        map1.put("foo", "bar");
         Map<String, String> map2 = new HashMap<>();
+        Map<String, String> difMap = new HashMap<>();
+        map1.put("foo", "bar");
+        map2.put("foo", "bar");
 
-        DeepCopiedMap deepCopiedMap1 = new DeepCopiedMap(map1);
-        DeepCopiedMap deepCopiedMap2 = new DeepCopiedMap(map2);
+        ImmutabilitySupportedMap<String, String> immutabilitySupportedMap1 = new ImmutabilitySupportedMap<>(map1);
+        ImmutabilitySupportedMap<String, String> immutabilitySupportedMap2 = new ImmutabilitySupportedMap<>(map2);
+        ImmutabilitySupportedMap<String, String> difImmutabilitySupportedMap = new ImmutabilitySupportedMap<>(difMap);
 
-        Assertions.assertNotEquals(deepCopiedMap1, deepCopiedMap2);
+        Assertions.assertEquals(immutabilitySupportedMap1, immutabilitySupportedMap2);
+        Assertions.assertNotEquals(immutabilitySupportedMap1, difImmutabilitySupportedMap);
     }
 
     @Test
     public void testHashCode() {
         Map<String, String> map1 = new HashMap<>();
-        map1.put("foo", "bar");
         Map<String, String> map2 = new HashMap<>();
+        Map<String, String> difMap = new HashMap<>();
+        map1.put("foo", "bar");
         map2.put("foo", "bar");
-        Map<String, String> map3 = new HashMap<>();
 
-        DeepCopiedMap deepCopiedMap1 = new DeepCopiedMap(map1);
-        DeepCopiedMap deepCopiedMap2 = new DeepCopiedMap(map2);
-        DeepCopiedMap difDeepCopiedMap = new DeepCopiedMap(map3);
+        ImmutabilitySupportedMap<String, String> immutabilitySupportedMap1 = new ImmutabilitySupportedMap<>(map1);
+        ImmutabilitySupportedMap<String, String> immutabilitySupportedMap2 = new ImmutabilitySupportedMap<>(map2);
+        ImmutabilitySupportedMap<String, String> difImmutabilitySupportedMap = new ImmutabilitySupportedMap<>(difMap);
 
-        Assertions.assertEquals(deepCopiedMap1.hashCode(), deepCopiedMap2.hashCode());
-        Assertions.assertNotEquals(deepCopiedMap1.hashCode(), difDeepCopiedMap.hashCode());
+        Assertions.assertEquals(immutabilitySupportedMap1.hashCode(), immutabilitySupportedMap2.hashCode());
+        Assertions.assertNotEquals(immutabilitySupportedMap1.hashCode(), difImmutabilitySupportedMap.hashCode());
     }
 
     @Test
     public void testEqualsVerifier() {
-        EqualsVerifier.forClass(DeepCopiedMap.class).withNonnullFields("map").verify();
+        EqualsVerifier.forClass(ImmutabilitySupportedMap.class).withNonnullFields("map").verify();
     }
 }
