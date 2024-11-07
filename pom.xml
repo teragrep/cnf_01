@@ -11,12 +11,46 @@
   <properties>
     <changelist>-SNAPSHOT</changelist>
     <java.version>11</java.version>
+    <junit.version>5.10.2</junit.version>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <revision>0.0.1</revision>
     <sha1></sha1>
   </properties>
+  <dependencies>
+    <!-- Logging -->
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.5.12</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>2.0.16</version>
+    </dependency>
+    <!-- junit, testing -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>nl.jqno.equalsverifier</groupId>
+      <artifactId>equalsverifier</artifactId>
+      <version>3.16.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
   <build>
     <directory>${project.basedir}/target</directory>
     <finalName>cnf_01</finalName>
@@ -159,6 +193,8 @@
             <exclude>eclipse-java-formatter.xml</exclude>
             <!-- readme -->
             <exclude>README.adoc</exclude>
+            <!-- resources -->
+            <exclude>src/test/resources/*</exclude>
           </excludes>
         </configuration>
         <executions>
