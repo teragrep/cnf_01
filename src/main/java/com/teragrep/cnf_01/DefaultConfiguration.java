@@ -1,5 +1,5 @@
 /*
- * Teragrep Java Configuration Library (cnf_01)
+ * Teragrep Configuration Library for Java (cnf_01)
  * Copyright (C) 2024 Suomen Kanuuna Oy
  *
  * This program is free software: you can redistribute it and/or modify
