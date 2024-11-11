@@ -62,26 +62,38 @@ public final class PropertiesConfiguration implements Configuration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PropertiesConfiguration.class);
 
-    private final Properties properties;
+    private final Map<String, String> configuration;
 
     public PropertiesConfiguration() {
         this(System.getProperties());
     }
 
     public PropertiesConfiguration(final Properties properties) {
-        this.properties = properties;
+        this(
+                Collections
+                        .unmodifiableMap(
+                                properties
+                                        .entrySet()
+                                        .stream()
+                                        .collect(
+                                                Collectors
+                                                        .toMap(k -> k.getKey().toString(), k -> k.getValue().toString())
+                                        )
+                        )
+        );
+    }
+
+    /**
+     * Private constructor so that a map can't be given as parameter by users. It would break immutability.
+     * 
+     * @param configuration the configuration as an immutable Map
+     */
+    private PropertiesConfiguration(final Map<String, String> configuration) {
+        this.configuration = configuration;
     }
 
     @Override
     public Map<String, String> asMap() {
-        final Map<String, String> configuration = Collections
-                .unmodifiableMap(
-                        properties
-                                .entrySet()
-                                .stream()
-                                .collect(Collectors.toMap(k -> k.getKey().toString(), k -> k.getValue().toString()))
-                );
-
         LOGGER.debug("Returning configuration map generated from properties.");
         LOGGER.trace("Returning configuration map <[{}]>", configuration);
 
@@ -97,11 +109,11 @@ public final class PropertiesConfiguration implements Configuration {
             return false;
         }
         final PropertiesConfiguration config = (PropertiesConfiguration) o;
-        return properties.equals(config.properties);
+        return configuration.equals(config.configuration);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(properties);
+        return Objects.hashCode(configuration);
     }
 }

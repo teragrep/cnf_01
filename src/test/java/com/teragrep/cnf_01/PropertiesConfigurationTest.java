@@ -60,10 +60,11 @@ public class PropertiesConfigurationTest {
         System.setProperty("bar", "foo");
 
         PropertiesConfiguration config = new PropertiesConfiguration(); // uses System.getProperties()
-        Map<String, String> result = config.asMap();
-
+        // clearing properties doesn't affect PropertiesConfiguration
         System.clearProperty("foo");
         System.clearProperty("bar");
+
+        Map<String, String> result = config.asMap();
 
         Assertions.assertEquals("bar", result.get("foo"));
         Assertions.assertEquals("foo", result.get("bar"));
@@ -76,10 +77,10 @@ public class PropertiesConfigurationTest {
         properties.put("bar", "foo");
 
         PropertiesConfiguration config = new PropertiesConfiguration(properties);
-        Map<String, String> result = config.asMap();
-
         // modifying the original properties doesn't modify the result map
         properties.put("biz", "buz");
+
+        Map<String, String> result = config.asMap();
 
         Assertions.assertEquals(2, result.size());
         Assertions.assertEquals("bar", result.get("foo"));
@@ -114,6 +115,9 @@ public class PropertiesConfigurationTest {
         properties2.put("foo", "bar");
 
         PropertiesConfiguration config1 = new PropertiesConfiguration(properties1);
+        // modifying properties1 doesn't modify immutable PropertiesConfiguration
+        properties1.put("bar", "foo");
+
         PropertiesConfiguration config2 = new PropertiesConfiguration(properties2);
 
         config1.asMap();
@@ -149,6 +153,6 @@ public class PropertiesConfigurationTest {
 
     @Test
     public void testEqualsVerifier() {
-        EqualsVerifier.forClass(PropertiesConfiguration.class).withNonnullFields("properties").verify();
+        EqualsVerifier.forClass(PropertiesConfiguration.class).withNonnullFields("configuration").verify();
     }
 }
