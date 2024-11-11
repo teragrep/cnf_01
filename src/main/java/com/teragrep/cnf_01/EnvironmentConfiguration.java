@@ -45,6 +45,9 @@
  */
 package com.teragrep.cnf_01;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Map;
 import java.util.Objects;
 
@@ -52,6 +55,8 @@ import java.util.Objects;
  * Provides a deep copied immutable map of the system's environment variables.
  */
 public final class EnvironmentConfiguration implements Configuration {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(EnvironmentConfiguration.class);
 
     private final ImmutableMap<String, String> environment;
 
@@ -73,6 +78,9 @@ public final class EnvironmentConfiguration implements Configuration {
 
     @Override
     public Map<String, String> asMap() {
+        LOGGER.debug("Returning configuration map generated from environment variables.");
+        LOGGER.trace("Returning configuration map <[{}]>", environment);
+
         return environment;
     }
 
