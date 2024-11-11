@@ -3,15 +3,18 @@
 // 2. Update the issues link in Contributing section in the readme file
 // 3. Update the discussion link in config.yml file in .github/ISSUE_TEMPLATE directory
 
-= repo-template
+= CNF-01: Java Configuration Library
 
 // Add a short description of your project. Tell what your project does and what it's used for.
 
-This is a template repository for Teragrep organization.
+CNF-01 is a library that provides immutable configuration for Java projects. Immutability is achieved by converting the configuration source into an immutable Map. The resulting configuration Map can't be altered even with modifying the underlying source.
 
 == Features
 
 // List your project's features
+- Provides immutable configurations for:
+. Configuration files / path properties (`PathConfiguration`)
+- Default configurations in case the provided configurations from a source are not found or are otherwise broken (`DefaultConfiguration`)
 
 == Documentation
 
@@ -20,16 +23,51 @@ See the official documentation on https://docs.teragrep.com[docs.teragrep.com].
 == Limitations
 
 // If your project has limitations, please list them. Otherwise remove this section.
+All planned configuration sources are not yet supported.
 
-== How to [compile/use/implement]
+== How to use
 
 // add instructions how people can start to use your project
+=== Configuration
+All sources of configuration can be used with the `Configuration` interface. It provides the method `asMap()` which returns the immutable configurations.
+
+An example with `PathConfiguration`:
+[,java]
+----
+Configuration configuration = new PathConfiguration("file/path");
+Map<String, String> configurationMap = configuration.asMap();
+----
+
+=== Default configuration
+You might want to specify default configurations in case something brakes. For example, the file path in the code block above might not be found. In the following example, notice how the Map with default configurations are given through the `ImmutabilitySupportedMap` object to ensure type safety. `DefaultConfiguration` only takes an `ImmutableMap` (provided in CNF-01) as a parameter for the defaults.
+[,java]
+----
+Map<String, String> map = new HashMap<>();
+ImmutableMap<String, String> defaults = new ImmutabilitySupportedMap<>(map).toImmutableMap();
+
+DefaultConfiguration defaultConfiguration = new DefaultConfiguration(
+        new PathConfiguration("file/path"),
+        defaults
+);
+Map<String, String> configurationMap = defaultConfiguration.asMap();
+----
+
+=== Configuration objects in your project
+The configuration Map from CNF-01 shouldn't be used directly in regular objects. It should only be passed to objects that are responsible for providing configured versions of other objects. In other words, Factories.
+
+Small example with an `Example` object:
+[,java]
+----
+ExampleFactory exampleFactory = new ExampleFactory(configurationMap);
+Example example = exampleFactory.example();
+----
+Here, the logic for instantiating an `Example` is in the `ExampleFactory` object, which receives the configuration map from CNF-01 as a parameter. This ensures that the main object (`Example`) is as clear as it can be.
 
 == Contributing
 
 // Change the repository name in the issues link to match with your project's name
 
-You can involve yourself with our project by https://github.com/teragrep/repo-template/issues/new/choose[opening an issue] or submitting a pull request.
+You can involve yourself with our project by https://github.com/teragrep/cnf_01/issues/new/choose[opening an issue] or submitting a pull request.
 
 Contribution requirements:
 
