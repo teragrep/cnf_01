@@ -77,7 +77,10 @@ public final class PropertiesConfiguration implements Configuration {
                                         .stream()
                                         .collect(
                                                 Collectors
-                                                        .toMap(k -> k.getKey().toString(), k -> k.getValue().toString())
+                                                        .toMap(
+                                                                entry -> entry.getKey().toString(),
+                                                                entry -> entry.getValue().toString()
+                                                        )
                                         )
                         )
         );
