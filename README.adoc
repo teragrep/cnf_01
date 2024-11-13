@@ -14,6 +14,7 @@ CNF-01 is a library that provides immutable configuration for Java projects. Imm
 // List your project's features
 - Provides immutable configurations for:
 . configuration files / path properties (`PathConfiguration`)
+. System Properties (`PropertiesConfiguration`)
 . environment variables (`EnvironmentConfiguration`)
 - Default configurations in case the provided configurations from a source are not found or are otherwise broken (`DefaultConfiguration`)
 
