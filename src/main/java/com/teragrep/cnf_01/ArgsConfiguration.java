@@ -88,7 +88,12 @@ public final class ArgsConfiguration implements Configuration {
                                     )
                     );
                 }
-                map.put(matcher.group(1), matcher.group(2).substring(1));
+
+                final String group1 = matcher.group(1);
+                final String group2 = matcher.group(2);
+                if (group1 != null && group2 != null) {
+                    map.put(group1, group2.substring(1));
+                }
             }
         }
         LOGGER.debug("Returning configuration map generated from command-line arguments.");
