@@ -79,7 +79,7 @@ public final class ArgsConfiguration implements Configuration {
             final Pattern ptn = Pattern.compile("([a-z]+)(=.+)");
             for (final String arg : args) {
                 final Matcher matcher = ptn.matcher(arg);
-                if (!matcher.matches()) {
+                if (!matcher.matches() || matcher.group(1) == null | matcher.group(2) == null) {
                     throw new ConfigurationException(
                             String
                                     .format(
@@ -89,11 +89,7 @@ public final class ArgsConfiguration implements Configuration {
                     );
                 }
 
-                final String group1 = matcher.group(1);
-                final String group2 = matcher.group(2);
-                if (group1 != null && group2 != null) {
-                    map.put(group1, group2.substring(1));
-                }
+                map.put(matcher.group(1), matcher.group(2).substring(1));
             }
         }
         LOGGER.debug("Returning configuration map generated from command-line arguments.");
