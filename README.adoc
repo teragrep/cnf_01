@@ -16,12 +16,8 @@ CNF-01 is a library that provides immutable configuration for Java projects. Imm
 . configuration files / path properties (`PathConfiguration`)
 . System Properties (`PropertiesConfiguration`)
 . environment variables (`EnvironmentConfiguration`)
+. command line arguments (`ArgsConfiguration`)
 - Default configurations in case the provided configurations from a source are not found or are otherwise broken (`DefaultConfiguration`)
-
-== Limitations
-
-// If your project has limitations, please list them. Otherwise remove this section.
-All planned configuration sources are not yet supported.
 
 == How to use
 
@@ -56,7 +52,7 @@ Map<String, String> configurationMap = defaultConfiguration.asMap();
 
 === Configuration objects in your project
 
-The configuration Map from CNF-01 shouldn't be used directly in regular objects. It should only be passed to objects that are responsible for providing configured versions of other objects, in other words, Factories.
+The configuration Map from CNF-01 shouldn't be used directly in regular objects. It should only be passed to objects that are responsible for providing configured versions of other objects, in other words, Factories. The regular objects must not be configurable!
 
 Small example with an `Example` object:
 
