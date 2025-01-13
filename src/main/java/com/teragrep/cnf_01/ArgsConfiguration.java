@@ -76,7 +76,7 @@ public final class ArgsConfiguration implements Configuration {
         final Map<String, String> map = new HashMap<>();
 
         if (args.length != 0) {
-            final Pattern ptn = Pattern.compile("([a-z]+)(=.+)");
+            final Pattern ptn = Pattern.compile("([A-Za-z.]+)(=.+)");
             for (final String arg : args) {
                 final Matcher matcher = ptn.matcher(arg);
                 if (!matcher.matches() || matcher.group(1) == null | matcher.group(2) == null) {
