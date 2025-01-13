@@ -74,6 +74,32 @@ public class ArgsConfigurationTest {
     }
 
     @Test
+    public void testCamelCaseArgs() {
+        String[] args = {
+                "exampleOption=value"
+        };
+        ArgsConfiguration config = new ArgsConfiguration(args);
+        Map<String, String> map = Assertions.assertDoesNotThrow(config::asMap);
+
+        Assertions.assertEquals(1, map.size());
+        Assertions.assertTrue(map.containsKey("exampleOption"));
+        Assertions.assertEquals("value", map.get("exampleOption"));
+    }
+
+    @Test
+    public void testDotArgs() {
+        String[] args = {
+                "example.option=value"
+        };
+        ArgsConfiguration config = new ArgsConfiguration(args);
+        Map<String, String> map = Assertions.assertDoesNotThrow(config::asMap);
+
+        Assertions.assertEquals(1, map.size());
+        Assertions.assertTrue(map.containsKey("example.option"));
+        Assertions.assertEquals("value", map.get("example.option"));
+    }
+
+    @Test
     public void testInvalidArgs() {
         String[] args = {
                 "foo", "bar"
