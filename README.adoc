@@ -33,7 +33,7 @@ Map<String, String> asMap() throws ConfigurationException;
 
 === System Properties
 
-In Java, System properties can be utilized with System.setProperty(key, value).
+In Java, System properties can be utilized with `System.setProperty(key, value)`.
 
 System properties can be used as a configuration source in CNF-01 with the `PropertiesConfiguration` object. It has two constructors:
 
