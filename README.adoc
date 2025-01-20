@@ -86,7 +86,7 @@ try {
 
 `PathConfiguration` throws an exception if the `File` is not found.
 
-Scroll down to see how default configurations can be used to avert the need for the try-catch.
+Read Default Configuration section to see how default configurations can be used to avert the need for the try-catch.
 
 === Command line arguments
 
@@ -109,7 +109,7 @@ public static void main(String[] args) {
 
 `ArgsConfiguration` throws an exception if the Strings in the array don't follow the `key=value` format.
 
-Scroll down to see how default configurations can be used to avert the need for the try-catch.
+Read Default Configuration section to see how default configurations can be used to avert the need for the try-catch.
 
 === Environment Variables
 
@@ -125,7 +125,7 @@ Map<String, String> configMap = configuration.asMap();
 
 === Default configuration
 
-Default configurations can be used in case the `asMap()` function throws `ConfigurationException`. If the function throws an exception, the defaults are used instead. This is currently only possible when using a file or command line arguments as a configuration source.
+Default configurations can be used in case the `asMap()` function throws `ConfigurationException`. If the function throws an exception, the defaults are used instead. Only `PathConfiguration` and `ArgsConfiguration` can currently throw an exception.
 
 `DefaultConfiguration` follows the pattern of composable decorators introduced in Elegant Objects. Therefore, it takes another `Configuration` object as an argument in the constructor. The second argument is an `ImmutableMap` which is in the CNF-01 library as well.
 
