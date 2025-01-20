@@ -24,30 +24,125 @@ CNF-01 is a library that provides immutable configuration for Java projects. Imm
 // add instructions how people can start to use your project
 === Configuration
 
-All sources of configuration can be used with the `Configuration` interface. It provides the method `asMap()` which returns the immutable configurations.
+All the sources are usable with the same `Configuration` -interface. It has a single function:
 
-An example with `PathConfiguration`:
+[,java]
+----
+Map<String, String> asMap() throws ConfigurationException;
+----
+
+=== System Properties
+
+In Java, System properties can be utilized with System.setProperty(key, value).
+
+System properties can be used as a configuration source in CNF-01 with the `PropertiesConfiguration` object. It has two constructors:
+
+[,java]
+----
+public PropertiesConfiguration(); // uses System.getProperties()
+public PropertiesConfiguration(Properties properties); // uses any Java Properties given
+----
+
+Most likely the default constructor is what you'll need, but in some cases the second constructor might become handy.
+
+Here's an example of using `PropertiesConfiguration`:
+
+[,java]
+----
+PropertiesConfiguration config = new PropertiesConfiguration(); // uses System.getProperties()
+Map<String, String> result = config.asMap();
+----
+
+=== Configuration File
+
+One of the supported configuration sources is a `File`. These are often marked with a ".properties" file extension but basically any Java's `File` object will do. The properties have to be given in a "key=value" format in the `File`. For example:
+
+[,bash]
+----
+bar=foo
+foo=bar
+----
+
+A file can be used as a configuration source with the `PathConfiguration` object. It has two constructors:
+
+[,java]
+----
+public PathConfiguration(final String fileName); // Uses the filename
+public PathConfiguration(final File file); // Uses Java's File object
+----
+
+Here's an example of using `PathConfiguration`:
 
 [,java]
 ----
 Configuration configuration = new PathConfiguration("file/path");
-Map<String, String> configurationMap = configuration.asMap();
+Map<String, String> configMap = new HashMap<>();
+try {
+    configMap = configuration.asMap();
+} catch (ConfigurationException e) {
+    // Handle the exception...
+}
+----
+
+`PathConfiguration` throws an exception if the `File` is not found.
+
+Scroll down to see how default configurations can be used to avert the need for the try-catch.
+
+=== Command line arguments
+
+Command line arguments (or any `String[] args`) can be utilized as a configuration source with the `ArgsConfiguration` object.
+
+Here's an example of using `ArgsConfiguration`:
+
+[,java]
+----
+public static void main(String[] args) {
+    Configuration configuration = new ArgsConfiguration(args);
+    Map<String, String> configMap = new HashMap<>();
+    try {
+        configMap = configuration.asMap();
+    } catch (ConfigurationException e) {
+        // Handle the exception...
+    }
+}
+----
+
+`ArgsConfiguration` throws an exception if the Strings in the array don't follow the "key=value" format.
+
+Scroll down to see how default configurations can be used to avert the need for the try-catch.
+
+=== Environment Variables
+
+`EnvironmentConfiguration` object supports Java's `System.getenv()`, meaning the system's environment variables. The constructor takes no arguments.
+
+Here's an example of using `EnvironmentConfiguration`:
+
+[,java]
+----
+Configuration configuration = new EnvironmentConfiguration();
+Map<String, String> configMap = configuration.asMap();
 ----
 
 === Default configuration
 
-You might want to specify default configurations in case something brakes. For example, the file path in the code block above might not be found. In the following example, notice how the Map with default configurations are given through the `ImmutabilitySupportedMap` object to ensure type safety. `DefaultConfiguration` only takes an `ImmutableMap` (provided in CNF-01) as a parameter for the defaults.
+Default configurations can be used with any configuration in case the `ConfigurationException` is thrown when using the `asMap()` function. In case of an exception the defaults are used instead. This is currently possible only when using a file or command line arguments as a configuration source.
+
+`DefaultConfiguration` follows the pattern of composable decorators introduced in Elegant Objects, so it takes another `Configuration` object as an argument in the constructor. The second argument is an `ImmutableMap` object which can be found in the CNF-01 library as well. Because immutability must be guaranteed in CNF-01, using default configurations can feel a bit tricky, as the configuration `Map` has to be created with a few objects.
+
+Here's an example of how to use `DefaultConfiguration` when paired with `PathConfiguration`:
 
 [,java]
 ----
 Map<String, String> map = new HashMap<>();
+map.put("foo", "bar");
 ImmutableMap<String, String> defaults = new ImmutabilitySupportedMap<>(map).toImmutableMap();
 
 DefaultConfiguration defaultConfiguration = new DefaultConfiguration(
-        new PathConfiguration("file/path"),
-        defaults
+    new PathConfiguration("invalid.path"), // uses PathConfiguration that will throw an exception
+    defaults
 );
-Map<String, String> configurationMap = defaultConfiguration.asMap();
+
+Map<String, String> result = defaultConfiguration.asMap();
 ----
 
 === Configuration objects in your project
