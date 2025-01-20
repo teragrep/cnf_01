@@ -55,7 +55,7 @@ Map<String, String> result = config.asMap();
 
 === Configuration File
 
-One of the supported configuration sources is a `File`. These are often marked with a ".properties" file extension but basically any Java's `File` object will do. The properties have to be given in a "key=value" format in the `File`. For example:
+One of the supported configuration sources is a `File`. These are often marked with a ".properties" file extension but basically any Java's `File` object will do. The properties have to be given in a `key=value` format in the `File`. For example:
 
 [,bash]
 ----
@@ -107,7 +107,7 @@ public static void main(String[] args) {
 }
 ----
 
-`ArgsConfiguration` throws an exception if the Strings in the array don't follow the "key=value" format.
+`ArgsConfiguration` throws an exception if the Strings in the array don't follow the `key=value` format.
 
 Scroll down to see how default configurations can be used to avert the need for the try-catch.
 
@@ -125,9 +125,9 @@ Map<String, String> configMap = configuration.asMap();
 
 === Default configuration
 
-Default configurations can be used with any configuration in case the `ConfigurationException` is thrown when using the `asMap()` function. In case of an exception the defaults are used instead. This is currently possible only when using a file or command line arguments as a configuration source.
+Default configurations can be used in case the `asMap()` function throws `ConfigurationException`. If the function throws an exception, the defaults are used instead. This is currently only possible when using a file or command line arguments as a configuration source.
 
-`DefaultConfiguration` follows the pattern of composable decorators introduced in Elegant Objects, so it takes another `Configuration` object as an argument in the constructor. The second argument is an `ImmutableMap` object which can be found in the CNF-01 library as well. Because immutability must be guaranteed in CNF-01, using default configurations can feel a bit tricky, as the configuration `Map` has to be created with a few objects.
+`DefaultConfiguration` follows the pattern of composable decorators introduced in Elegant Objects. Therefore, it takes another `Configuration` object as an argument in the constructor. The second argument is an `ImmutableMap` which is in the CNF-01 library as well.
 
 Here's an example of how to use `DefaultConfiguration` when paired with `PathConfiguration`:
 
