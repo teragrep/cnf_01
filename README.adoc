@@ -19,13 +19,13 @@ CNF-01 is a library that provides immutable configuration for Java projects. Imm
 . command line arguments (`ArgsConfiguration`)
 - Default configurations in case the provided configurations from a source are not found or are otherwise broken (`DefaultConfiguration`)
 
-== A word about immutability
+== A Word About Immutability
 
 Notable in CNF-01 is that the *configurations can not change after initialization*.
 
 For example, something might be added to the Java's System Properties even before calling `asMap()` on the `PropertiesConfiguration` object. However, this will not have effect on the `Configuration` object at all. *All the objects are immutable.*
 
-== How to use
+== How To Use
 
 // add instructions how people can start to use your project
 === Configuration
@@ -94,7 +94,7 @@ try {
 
 Read Default Configuration section to see how default configurations can be used to avert the need for the try-catch.
 
-=== Command line arguments
+=== Command Line Arguments
 
 Command line arguments (or any `String[] args`) can be utilized as a configuration source with the `ArgsConfiguration` object.
 
@@ -129,7 +129,7 @@ Configuration configuration = new EnvironmentConfiguration();
 Map<String, String> configMap = configuration.asMap();
 ----
 
-=== Default configuration
+=== Default Configuration
 
 Default configurations can be used in case the `asMap()` function throws `ConfigurationException`. If the function throws an exception, the defaults are used instead. Only `PathConfiguration` and `ArgsConfiguration` can currently throw an exception.
 
@@ -151,7 +151,7 @@ DefaultConfiguration defaultConfiguration = new DefaultConfiguration(
 Map<String, String> result = defaultConfiguration.asMap();
 ----
 
-== How to implement
+== How To Implement
 
 When implementing CNF-01 to a project, the point is to keep the main objects immutable and simple by moving the handling of configuration to their own objects.
 
@@ -159,7 +159,7 @@ Follow these steps to implement CNF-01 in a Java project:
 
 * Identify the object that has to use configurations.
 * You can define an interface for the factory objects that create the configured objects:
-
++
 [,java]
 ----
 public interface Factory<T> {
@@ -168,7 +168,7 @@ public interface Factory<T> {
 ----
 
 * Create a Factory object for the object that has to use configurations.
-
++
 [,java]
 ----
 public final class ExampleFactory implements Factory<Example> {
@@ -198,7 +198,7 @@ public final class ExampleFactory implements Factory<Example> {
 ----
 
 * Utilize the Factory object to get properly initialized objects with the configuration options.
-
++
 [,java]
 ----
 PropertiesConfiguration config = new PropertiesConfiguration();
