@@ -25,6 +25,68 @@ Notable in CNF-01 is that the *configurations can not change after initializatio
 
 For example, something might be added to the Java's System Properties even before calling `asMap()` on the `PropertiesConfiguration` object. However, this will not have effect on the `Configuration` object at all. *All the objects are immutable.*
 
+== How To Implement
+
+When implementing CNF-01 to a project, the point is to keep the main objects immutable and simple by moving the handling of configuration to their own objects.
+
+Follow these steps to implement CNF-01 in a Java project:
+
+* Identify the object that has to use configurations.
+* You can define an interface for the factory objects that create the configured objects:
++
+
+[,java]
+----
+public interface Factory<T> {
+    public T object();
+}
+----
+
+* Create a Factory object for the object that has to use configurations.
++
+
+[,java]
+----
+public final class ExampleFactory implements Factory<Example> {
+
+    private final Map<String, String> config;
+
+    public ExampleFactory(final Map<String, String> config) {
+        this.config = config;
+    }
+
+    @Override
+    public Example object() {
+        // Parsing of values should be done here too if something else than String is needed
+        final String exampleType = config.get("example.type");
+        final String exampleText = config.get("example.text");
+        final Example example;
+
+        if (exampleType.equals("good")) {
+            example = new GoodExample(exampleText);
+        } else {
+            example = new BadExample(exampleText);
+        }
+
+        return example;
+    }
+}
+----
+
+* Utilize the Factory object to get properly initialized objects with the configuration options.
++
+
+[,java]
+----
+PropertiesConfiguration config = new PropertiesConfiguration();
+Map<String, String> configurationMap = config.asMap();
+
+ExampleFactory exampleFactory = new ExampleFactory(configurationMap);
+Example example = exampleFactory.object();
+----
+
+* Create additional factories for other objects that require configurations.
+
 == How To Use
 
 // add instructions how people can start to use your project
@@ -150,68 +212,6 @@ DefaultConfiguration defaultConfiguration = new DefaultConfiguration(
 
 Map<String, String> result = defaultConfiguration.asMap();
 ----
-
-== How To Implement
-
-When implementing CNF-01 to a project, the point is to keep the main objects immutable and simple by moving the handling of configuration to their own objects.
-
-Follow these steps to implement CNF-01 in a Java project:
-
-* Identify the object that has to use configurations.
-* You can define an interface for the factory objects that create the configured objects:
-+
-
-[,java]
-----
-public interface Factory<T> {
-    public T object();
-}
-----
-
-* Create a Factory object for the object that has to use configurations.
-+
-
-[,java]
-----
-public final class ExampleFactory implements Factory<Example> {
-
-    private final Map<String, String> config;
-
-    public ExampleFactory(final Map<String, String> config) {
-        this.config = config;
-    }
-
-    @Override
-    public Example object() {
-        // Parsing of values should be done here too if something else than String is needed
-        final String exampleType = config.get("example.type");
-        final String exampleText = config.get("example.text");
-        final Example example;
-
-        if (exampleType.equals("good")) {
-            example = new GoodExample(exampleText);
-        } else {
-            example = new BadExample(exampleText);
-        }
-
-        return example;
-    }
-}
-----
-
-* Utilize the Factory object to get properly initialized objects with the configuration options.
-+
-
-[,java]
-----
-PropertiesConfiguration config = new PropertiesConfiguration();
-Map<String, String> configurationMap = config.asMap();
-
-ExampleFactory exampleFactory = new ExampleFactory(configurationMap);
-Example example = exampleFactory.object();
-----
-
-* Create additional factories for other objects that require configurations.
 
 == Contributing
 
