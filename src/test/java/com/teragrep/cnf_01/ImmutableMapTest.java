@@ -73,49 +73,6 @@ public class ImmutableMapTest {
     }
 
     @Test
-    public void testEquals() {
-        Map<String, String> map1 = new HashMap<>();
-        map1.put("foo", "bar");
-        Map<String, String> map2 = new HashMap<>();
-        map2.put("foo", "bar");
-
-        ImmutableMap<String, String> immutableMap1 = new ImmutableMap<>(map1);
-        ImmutableMap<String, String> immutableMap2 = new ImmutableMap<>(map2);
-
-        immutableMap1.map();
-
-        Assertions.assertEquals(immutableMap1, immutableMap2);
-    }
-
-    @Test
-    public void testNotEquals() {
-        Map<String, String> map1 = new HashMap<>();
-        map1.put("foo", "bar");
-        Map<String, String> map2 = new HashMap<>();
-
-        ImmutableMap<String, String> immutableMap1 = new ImmutableMap<>(map1);
-        ImmutableMap<String, String> immutableMap2 = new ImmutableMap<>(map2);
-
-        Assertions.assertNotEquals(immutableMap1, immutableMap2);
-    }
-
-    @Test
-    public void testHashCode() {
-        Map<String, String> map1 = new HashMap<>();
-        map1.put("foo", "bar");
-        Map<String, String> map2 = new HashMap<>();
-        map2.put("foo", "bar");
-        Map<String, String> map3 = new HashMap<>();
-
-        ImmutableMap<String, String> immutableMap1 = new ImmutableMap<>(map1);
-        ImmutableMap<String, String> immutableMap2 = new ImmutableMap<>(map2);
-        ImmutableMap<String, String> difImmutableMap = new ImmutableMap<>(map3);
-
-        Assertions.assertEquals(immutableMap1.hashCode(), immutableMap2.hashCode());
-        Assertions.assertNotEquals(immutableMap1.hashCode(), difImmutableMap.hashCode());
-    }
-
-    @Test
     public void testEqualsVerifier() {
         EqualsVerifier.forClass(ImmutableMap.class).withNonnullFields("map").verify();
     }

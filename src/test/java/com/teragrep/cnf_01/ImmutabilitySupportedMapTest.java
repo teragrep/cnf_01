@@ -74,54 +74,6 @@ public class ImmutabilitySupportedMapTest {
     }
 
     @Test
-    public void testEquals() {
-        Map<String, String> map1 = new HashMap<>();
-        Map<String, String> map2 = new HashMap<>();
-        map1.put("foo", "bar");
-        map2.put("foo", "bar");
-
-        ImmutabilitySupportedMap<String, String> immutabilitySupportedMap1 = new ImmutabilitySupportedMap<>(map1);
-        ImmutabilitySupportedMap<String, String> immutabilitySupportedMap2 = new ImmutabilitySupportedMap<>(map2);
-
-        // It's a Map decorator so it is mutable, but the new function toImmutableMap shouldn't mutate the object
-        immutabilitySupportedMap1.toImmutableMap();
-
-        Assertions.assertEquals(immutabilitySupportedMap1, immutabilitySupportedMap2);
-    }
-
-    @Test
-    public void testNotEquals() {
-        Map<String, String> map1 = new HashMap<>();
-        Map<String, String> map2 = new HashMap<>();
-        Map<String, String> difMap = new HashMap<>();
-        map1.put("foo", "bar");
-        map2.put("foo", "bar");
-
-        ImmutabilitySupportedMap<String, String> immutabilitySupportedMap1 = new ImmutabilitySupportedMap<>(map1);
-        ImmutabilitySupportedMap<String, String> immutabilitySupportedMap2 = new ImmutabilitySupportedMap<>(map2);
-        ImmutabilitySupportedMap<String, String> difImmutabilitySupportedMap = new ImmutabilitySupportedMap<>(difMap);
-
-        Assertions.assertEquals(immutabilitySupportedMap1, immutabilitySupportedMap2);
-        Assertions.assertNotEquals(immutabilitySupportedMap1, difImmutabilitySupportedMap);
-    }
-
-    @Test
-    public void testHashCode() {
-        Map<String, String> map1 = new HashMap<>();
-        Map<String, String> map2 = new HashMap<>();
-        Map<String, String> difMap = new HashMap<>();
-        map1.put("foo", "bar");
-        map2.put("foo", "bar");
-
-        ImmutabilitySupportedMap<String, String> immutabilitySupportedMap1 = new ImmutabilitySupportedMap<>(map1);
-        ImmutabilitySupportedMap<String, String> immutabilitySupportedMap2 = new ImmutabilitySupportedMap<>(map2);
-        ImmutabilitySupportedMap<String, String> difImmutabilitySupportedMap = new ImmutabilitySupportedMap<>(difMap);
-
-        Assertions.assertEquals(immutabilitySupportedMap1.hashCode(), immutabilitySupportedMap2.hashCode());
-        Assertions.assertNotEquals(immutabilitySupportedMap1.hashCode(), difImmutabilitySupportedMap.hashCode());
-    }
-
-    @Test
     public void testEqualsVerifier() {
         EqualsVerifier.forClass(ImmutabilitySupportedMap.class).withNonnullFields("map").verify();
     }

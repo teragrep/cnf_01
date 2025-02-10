@@ -73,33 +73,6 @@ public class PathConfigurationTest {
     }
 
     @Test
-    public void testEquals() {
-        PathConfiguration config1 = new PathConfiguration("src/test/resources/configuration.properties");
-        PathConfiguration config2 = new PathConfiguration("src/test/resources/configuration.properties");
-
-        Assertions.assertDoesNotThrow(config1::asMap);
-        Assertions.assertEquals(config1, config2);
-    }
-
-    @Test
-    public void testNotEquals() {
-        PathConfiguration config1 = new PathConfiguration("src/test/resources/configuration.properties");
-        PathConfiguration config2 = new PathConfiguration("invalid.path");
-
-        Assertions.assertNotEquals(config1, config2);
-    }
-
-    @Test
-    public void testHashCode() {
-        PathConfiguration config1 = new PathConfiguration("src/test/resources/configuration.properties");
-        PathConfiguration config2 = new PathConfiguration("src/test/resources/configuration.properties");
-        PathConfiguration difConfig = new PathConfiguration("invalid.path");
-
-        Assertions.assertEquals(config1.hashCode(), config2.hashCode());
-        Assertions.assertNotEquals(config1.hashCode(), difConfig.hashCode());
-    }
-
-    @Test
     public void testEqualsVerifier() {
         EqualsVerifier.forClass(PathConfiguration.class).withNonnullFields("file").verify();
     }
