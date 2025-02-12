@@ -92,55 +92,6 @@ public class EnvironmentConfigurationTest {
     }
 
     @Test
-    public void testEqualsEnvironment() {
-        EnvironmentConfiguration env1 = new EnvironmentConfiguration();
-        EnvironmentConfiguration env2 = new EnvironmentConfiguration();
-
-        env1.asMap();
-
-        Assertions.assertEquals(env1, env2);
-    }
-
-    @Test
-    public void testEqualsMap() {
-        Map<String, String> map1 = new HashMap<>();
-        map1.put("foo", "bar");
-        Map<String, String> map2 = new HashMap<>();
-        map2.put("foo", "bar");
-
-        EnvironmentConfiguration env1 = new EnvironmentConfiguration(map1);
-        EnvironmentConfiguration env2 = new EnvironmentConfiguration(map2);
-
-        env1.asMap();
-
-        Assertions.assertEquals(env1, env2);
-    }
-
-    @Test
-    public void testNotEquals() {
-        Map<String, String> map = new HashMap<>();
-        map.put("foo", "bar");
-        EnvironmentConfiguration env1 = new EnvironmentConfiguration();
-        EnvironmentConfiguration env2 = new EnvironmentConfiguration(map);
-
-        Assertions.assertNotEquals(env1, env2);
-    }
-
-    @Test
-    public void testHashCode() {
-        Map<String, String> map1 = new HashMap<>();
-        map1.put("foo", "bar");
-        Map<String, String> map2 = new HashMap<>();
-        map2.put("foo", "bar");
-        EnvironmentConfiguration env1 = new EnvironmentConfiguration(map1);
-        EnvironmentConfiguration env2 = new EnvironmentConfiguration(map2);
-        EnvironmentConfiguration difEnv = new EnvironmentConfiguration();
-
-        Assertions.assertEquals(env1.hashCode(), env2.hashCode());
-        Assertions.assertNotEquals(env1.hashCode(), difEnv.hashCode());
-    }
-
-    @Test
     public void testEqualsVerifier() {
         EqualsVerifier.forClass(EnvironmentConfiguration.class).withNonnullFields("environment").verify();
     }

@@ -135,58 +135,6 @@ public class ArgsConfigurationTest {
     }
 
     @Test
-    public void testEquals() {
-        String[] args = {
-                "foo=bar", "bar=foo"
-        };
-        ArgsConfiguration config = new ArgsConfiguration(args);
-
-        String[] args2 = {
-                "foo=bar", "bar=foo"
-        };
-        ArgsConfiguration config2 = new ArgsConfiguration(args2);
-
-        Assertions.assertDoesNotThrow(config::asMap);
-
-        Assertions.assertEquals(config, config2);
-    }
-
-    @Test
-    public void testNotEquals() {
-        String[] args = {
-                "foo=bar", "bar=foo"
-        };
-        String[] args2 = {
-                ""
-        };
-
-        ArgsConfiguration config = new ArgsConfiguration(args);
-        ArgsConfiguration config2 = new ArgsConfiguration(args2);
-
-        Assertions.assertNotEquals(config, config2);
-    }
-
-    @Test
-    public void testHashCode() {
-        String[] args = {
-                "foo=bar", "bar=foo"
-        };
-        String[] args2 = {
-                "foo=bar", "bar=foo"
-        };
-        String[] args3 = {
-                ""
-        };
-
-        ArgsConfiguration config = new ArgsConfiguration(args);
-        ArgsConfiguration config2 = new ArgsConfiguration(args2);
-        ArgsConfiguration config3 = new ArgsConfiguration(args3);
-
-        Assertions.assertEquals(config.hashCode(), config2.hashCode());
-        Assertions.assertNotEquals(config.hashCode(), config3.hashCode());
-    }
-
-    @Test
     public void testEqualsVerifier() {
         EqualsVerifier.forClass(ArgsConfiguration.class).withNonnullFields("args").verify();
     }

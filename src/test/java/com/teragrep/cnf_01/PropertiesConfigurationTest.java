@@ -98,60 +98,6 @@ public class PropertiesConfigurationTest {
     }
 
     @Test
-    public void testEqualsWithSystemProperties() {
-        PropertiesConfiguration config1 = new PropertiesConfiguration();
-        PropertiesConfiguration config2 = new PropertiesConfiguration();
-
-        config1.asMap();
-        Assertions.assertEquals(config1, config2);
-    }
-
-    @Test
-    public void testEqualsWithProperties() {
-        Properties properties1 = new Properties();
-        properties1.put("foo", "bar");
-
-        Properties properties2 = new Properties();
-        properties2.put("foo", "bar");
-
-        PropertiesConfiguration config1 = new PropertiesConfiguration(properties1);
-        // modifying properties1 doesn't modify immutable PropertiesConfiguration
-        properties1.put("bar", "foo");
-
-        PropertiesConfiguration config2 = new PropertiesConfiguration(properties2);
-
-        config1.asMap();
-        Assertions.assertEquals(config1, config2);
-    }
-
-    @Test
-    public void testNotEquals() {
-        Properties properties = new Properties();
-        properties.put("foo", "bar");
-
-        PropertiesConfiguration config1 = new PropertiesConfiguration();
-        PropertiesConfiguration config2 = new PropertiesConfiguration(properties);
-
-        Assertions.assertNotEquals(config1, config2);
-    }
-
-    @Test
-    public void testHashCode() {
-        Properties properties1 = new Properties();
-        properties1.put("foo", "bar");
-
-        Properties properties2 = new Properties();
-        properties2.put("foo", "bar");
-
-        PropertiesConfiguration config1 = new PropertiesConfiguration(properties1);
-        PropertiesConfiguration config2 = new PropertiesConfiguration(properties2);
-        PropertiesConfiguration difConfig = new PropertiesConfiguration();
-
-        Assertions.assertEquals(config1.hashCode(), config2.hashCode());
-        Assertions.assertNotEquals(config1.hashCode(), difConfig.hashCode());
-    }
-
-    @Test
     public void testEqualsVerifier() {
         EqualsVerifier.forClass(PropertiesConfiguration.class).withNonnullFields("configuration").verify();
     }

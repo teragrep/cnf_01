@@ -93,58 +93,6 @@ public class DefaultConfigurationTest {
     }
 
     @Test
-    public void testEquals() {
-        PathConfiguration pathConfig1 = new PathConfiguration("src/test/resources/configuration.properties");
-        ImmutableMap<String, String> defaults1 = Assertions
-                .assertDoesNotThrow(() -> new ImmutabilitySupportedMap<>(pathConfig1.asMap()).toImmutableMap());
-        PathConfiguration pathConfig2 = new PathConfiguration("src/test/resources/configuration.properties");
-        ImmutableMap<String, String> defaults2 = Assertions
-                .assertDoesNotThrow(() -> new ImmutabilitySupportedMap<>(pathConfig2.asMap()).toImmutableMap());
-
-        DefaultConfiguration defaultConfiguration1 = new DefaultConfiguration(pathConfig1, defaults1);
-        DefaultConfiguration defaultConfiguration2 = new DefaultConfiguration(pathConfig2, defaults2);
-
-        defaultConfiguration1.asMap();
-
-        Assertions.assertEquals(defaultConfiguration1, defaultConfiguration2);
-    }
-
-    @Test
-    public void testNotEquals() {
-        PathConfiguration pathConfig1 = new PathConfiguration("src/test/resources/configuration.properties");
-        ImmutableMap<String, String> defaults1 = Assertions
-                .assertDoesNotThrow(() -> new ImmutabilitySupportedMap<>(pathConfig1.asMap()).toImmutableMap());
-        PathConfiguration pathConfig2 = new PathConfiguration("invalid.path");
-        ImmutableMap<String, String> defaults2 = new ImmutabilitySupportedMap<String, String>(new HashMap<>())
-                .toImmutableMap();
-
-        DefaultConfiguration defaultConfiguration1 = new DefaultConfiguration(pathConfig1, defaults1);
-        DefaultConfiguration defaultConfiguration2 = new DefaultConfiguration(pathConfig2, defaults2);
-
-        Assertions.assertNotEquals(defaultConfiguration1, defaultConfiguration2);
-    }
-
-    @Test
-    public void testHashCode() {
-        PathConfiguration pathConfig1 = new PathConfiguration("src/test/resources/configuration.properties");
-        ImmutableMap<String, String> defaults1 = Assertions
-                .assertDoesNotThrow(() -> new ImmutabilitySupportedMap<>(pathConfig1.asMap()).toImmutableMap());
-        PathConfiguration pathConfig2 = new PathConfiguration("src/test/resources/configuration.properties");
-        ImmutableMap<String, String> defaults2 = Assertions
-                .assertDoesNotThrow(() -> new ImmutabilitySupportedMap<>(pathConfig2.asMap()).toImmutableMap());
-        PathConfiguration difPathConfig = new PathConfiguration("invalid.path");
-        ImmutableMap<String, String> difDefaults = new ImmutabilitySupportedMap<String, String>(new HashMap<>())
-                .toImmutableMap();
-
-        DefaultConfiguration defaultConfiguration1 = new DefaultConfiguration(pathConfig1, defaults1);
-        DefaultConfiguration defaultConfiguration2 = new DefaultConfiguration(pathConfig2, defaults2);
-        DefaultConfiguration difDefaultConfiguration = new DefaultConfiguration(difPathConfig, difDefaults);
-
-        Assertions.assertEquals(defaultConfiguration1.hashCode(), defaultConfiguration2.hashCode());
-        Assertions.assertNotEquals(defaultConfiguration1.hashCode(), difDefaultConfiguration.hashCode());
-    }
-
-    @Test
     public void testEqualsVerifier() {
         EqualsVerifier
                 .forClass(DefaultConfiguration.class)
