@@ -100,6 +100,32 @@ public class ArgsConfigurationTest {
     }
 
     @Test
+    public void testUnderscoreArgs() {
+        String[] args = {
+                "example_option=value"
+        };
+        ArgsConfiguration config = new ArgsConfiguration(args);
+        Map<String, String> map = Assertions.assertDoesNotThrow(config::asMap);
+
+        Assertions.assertEquals(1, map.size());
+        Assertions.assertTrue(map.containsKey("example_option"));
+        Assertions.assertEquals("value", map.get("example_option"));
+    }
+
+    @Test
+    public void testHyphenArgs() {
+        String[] args = {
+                "example-option=value"
+        };
+        ArgsConfiguration config = new ArgsConfiguration(args);
+        Map<String, String> map = Assertions.assertDoesNotThrow(config::asMap);
+
+        Assertions.assertEquals(1, map.size());
+        Assertions.assertTrue(map.containsKey("example-option"));
+        Assertions.assertEquals("value", map.get("example-option"));
+    }
+
+    @Test
     public void testInvalidArgs() {
         String[] args = {
                 "foo", "bar"
@@ -111,7 +137,7 @@ public class ArgsConfigurationTest {
 
         Assertions
                 .assertEquals(
-                        "Can't parse argument 'foo'. Args have to be given in \"key=value\" format.",
+                        "Can't parse argument 'foo'. It might contain an unsupported character or is not given in \"key=value\" format.",
                         exception.getMessage()
                 );
     }
