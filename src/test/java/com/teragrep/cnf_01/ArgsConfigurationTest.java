@@ -137,7 +137,24 @@ public class ArgsConfigurationTest {
 
         Assertions
                 .assertEquals(
-                        "Can't parse argument 'foo'. It might contain an unsupported character or is not given in \"key=value\" format.",
+                        "Can't parse argument 'foo'. Arguments must be given in \"key=value\" format.",
+                        exception.getMessage()
+                );
+    }
+
+    @Test
+    public void testNoKeyNoValue() {
+        String[] args = {
+                "="
+        };
+
+        ArgsConfiguration config = new ArgsConfiguration(args);
+
+        ConfigurationException exception = Assertions.assertThrows(ConfigurationException.class, config::asMap);
+
+        Assertions
+                .assertEquals(
+                        "Can't parse argument '='. Arguments must be given in \"key=value\" format.",
                         exception.getMessage()
                 );
     }
