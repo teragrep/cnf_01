@@ -76,7 +76,7 @@ public final class ArgsConfiguration implements Configuration {
         final Map<String, String> map = new HashMap<>();
 
         if (args.length != 0) {
-            final Pattern ptn = Pattern.compile("(.+)(=.+)");
+            final Pattern ptn = Pattern.compile("((?:\\\\=|[^=])+)=((?:\\\\=|[^=])+)");
             for (final String arg : args) {
                 final Matcher matcher = ptn.matcher(arg);
                 if (!matcher.matches() || matcher.group(1) == null | matcher.group(2) == null) {
@@ -89,7 +89,10 @@ public final class ArgsConfiguration implements Configuration {
                     );
                 }
 
-                map.put(matcher.group(1), matcher.group(2).substring(1));
+                // unescape equal signs
+                final String key = matcher.group(1).replace("\\=", "=");
+                final String value = matcher.group(2).replace("\\=", "=");
+                map.put(key, value);
             }
         }
         LOGGER.debug("Returning configuration map generated from command-line arguments.");

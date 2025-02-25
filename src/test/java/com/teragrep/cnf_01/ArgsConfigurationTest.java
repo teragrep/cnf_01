@@ -126,6 +126,48 @@ public class ArgsConfigurationTest {
     }
 
     @Test
+    public void testEscapeCharacterArgs() {
+        String[] args = {
+                "fo\\o=ba\\a\\a\\r"
+        };
+        ArgsConfiguration config = new ArgsConfiguration(args);
+        Map<String, String> map = Assertions.assertDoesNotThrow(config::asMap);
+
+        Assertions.assertEquals(1, map.size());
+        Assertions.assertTrue(map.containsKey("fo\\o"));
+        Assertions.assertEquals("ba\\a\\a\\r", map.get("fo\\o"));
+    }
+
+    @Test
+    public void testMultipleEqualsEscapedArgs() {
+        String[] args = {
+                "foo=b\\=ar"
+        };
+        ArgsConfiguration config = new ArgsConfiguration(args);
+        Map<String, String> map = Assertions.assertDoesNotThrow(config::asMap);
+
+        Assertions.assertEquals(1, map.size());
+        Assertions.assertTrue(map.containsKey("foo"));
+        Assertions.assertEquals("b=ar", map.get("foo"));
+    }
+
+    @Test
+    public void testMultipleEqualsArgs() {
+        String[] args = {
+                "foo=b=ar"
+        };
+        ArgsConfiguration config = new ArgsConfiguration(args);
+
+        ConfigurationException exception = Assertions.assertThrows(ConfigurationException.class, config::asMap);
+
+        Assertions
+                .assertEquals(
+                        "Can't parse argument 'foo=b=ar'. Arguments must be given in \"key=value\" format.",
+                        exception.getMessage()
+                );
+    }
+
+    @Test
     public void testInvalidArgs() {
         String[] args = {
                 "foo", "bar"
