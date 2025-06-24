@@ -69,27 +69,30 @@ public final class ArgsConfiguration implements Configuration {
      * Produces a Map of configurations from the args.
      *
      * @return immutable map of the args
-     * @throws ConfigurationException If the args are not given in the format of this regex: ([A-Za-z.\-_]+)(=.+)
+     * @throws ConfigurationException If the args are not given in the 'key=value' format.
      */
     @Override
     public Map<String, String> asMap() throws ConfigurationException {
         final Map<String, String> map = new HashMap<>();
 
         if (args.length != 0) {
-            final Pattern ptn = Pattern.compile("([A-Za-z.\\-_]+)(=.+)");
+            final Pattern ptn = Pattern.compile("((?:\\\\=|[^=])+)=((?:\\\\=|[^=])+)");
             for (final String arg : args) {
                 final Matcher matcher = ptn.matcher(arg);
                 if (!matcher.matches() || matcher.group(1) == null | matcher.group(2) == null) {
                     throw new ConfigurationException(
                             String
                                     .format(
-                                            "Can't parse argument '%s'. It might contain an unsupported character or is not given in \"key=value\" format.",
+                                            "Can't parse argument '%s'. Arguments must be given in \"key=value\" format.",
                                             arg
                                     )
                     );
                 }
 
-                map.put(matcher.group(1), matcher.group(2).substring(1));
+                // unescape equal signs
+                final String key = matcher.group(1).replace("\\=", "=");
+                final String value = matcher.group(2).replace("\\=", "=");
+                map.put(key, value);
             }
         }
         LOGGER.debug("Returning configuration map generated from command-line arguments.");
